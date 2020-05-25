@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+  <!--配置ContextLoaderListener来使用AnnotationConfigWebApplicationContext
+       而不是默认的XmlWebApplicationContext-->
+  <context-param>
+    <param-name>contextClass</param-name>
+    <param-value>
+      org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+    </param-value>
+  </context-param>
+  <!--配置位置必须由一个或多个逗号或空格分隔的完全限定@ configuration类。完全合格的包也可能是
+    指定组件扫描-->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>com.jun.conf.AppConfig</param-value>
+  </context-param>
+  <!--配置spring-web.jar提供的监听器，此监听器可以再服务器启动时 初始化Ioc容器-->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!--配置dispatcher-->
+  <servlet>
+    <servlet-name>dispatcher</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!-- 配置DispatcherServlet以使用AnnotationConfigWebApplicationContext
+         而不是默认的XmlWebApplicationContext -->
+    <init-param>
+      <param-name>contextClass</param-name>
+      <param-value>
+        org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+      </param-value>
+    </init-param>
+    <!-- 同样，配置位置必须由一个或多个逗号或空格分隔的和完全限定的@Configuration类 -->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>com.acme.web.MvcConfig</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- 将/app/*的所有请求映射到dispatcher servlet -->
+  <servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>/app/*</url-pattern>
+  </servlet-mapping>
+</web-app>
